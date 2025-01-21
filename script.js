@@ -19,8 +19,8 @@ function divide(a, b) {
 }
 
 function operate(a, b, operator) {
-	a = number(a);
-	b = number(b);
+	a = Number(a);
+	b = Number(b);
 	switch (operator) {
 		case '+':
 			return add(a, b);
@@ -34,40 +34,72 @@ function operate(a, b, operator) {
 			return NaN;
 	}
 }
-
+function updateDisplay() {
+	display.textContent = displayValue;
+}
 function inputNumber(number) {
 	if (waitingForSecondNumber) {
 		displayValue = number;
 		waitingForSecondNumber = false;
 	} else {
-		displayValue = displayValue + number;
+		displayValue = displayValue === '0' ? number : displayValue + number;
 	}
 	updateDisplay();
 }
 
-function inputOperator(operator) {
-	//need to write
-	let firstNumber = parseFloat(displayValue);
+function inputOperator(newOperator) {
+	const currentValue = parseFloat(displayValue);
 
-	displayValue = displayValue + operator;
+	if (operator !== null && !waitingForSecondNumber) {
+		const result = operate(firstNumber, currentValue, operator);
+		displayValue = String(result);
+		firstNumber = result;
+	} else {
+		firstNumber = currentValue;
+	}
+
+	operator = newOperator;
+	waitingForSecondNumber = true;
+	updateDisplay();
 }
 
-function updateDisplay() {
-	display.textContent = displayValue;
+function inputDecimal() {
+	if (waitingForSecondNumber) {
+		displayValue = '0.';
+		waitingForSecondNumber = false;
+	} else if (!displayValue.includes('.')) {
+		displayValue += '.';
+	}
+	updateDisplay();
+}
+
+function equals() {
+	if (operator === null || waitingForSecondNumber) return;
+
+	const secondNumber = parseFloat(displayValue);
+	const result = operate(firstNumber, secondNumber, operator);
+
+	displayValue = String(result);
+	firstNumber = result;
+	operator = null;
+	waitingForSecondNumber = true;
+	updateDisplay();
 }
 
 function clear() {
 	displayValue = '0';
-	operator = null;
 	firstNumber = null;
+	operator = null;
 	waitingForSecondNumber = true;
+	updateDisplay();
 }
-const display = document.querySelector('.display');
-const numberButtons = document.querySelectorAll('.number');
-const clearButton = document.querySelector('.clear');
-const operatorButtons = document.querySelectorAll('.operator');
-const equalsButton = document.querySelector('.equals');
-const decimalButton = document.querySelector('.decimal');
+
+const display = document.querySelector('[data-display]');
+const numberButtons = document.querySelectorAll('[data-number]');
+const clearButton = document.querySelector('[data-clear]');
+const operatorButtons = document.querySelectorAll('[data-operator]');
+const equalsButton = document.querySelector('[data-equals]');
+const decimalButton = document.querySelector('[data-decimal]');
 
 let displayValue = '0';
 let operator = null;
@@ -75,14 +107,13 @@ let firstNumber = null;
 let waitingForSecondNumber = true;
 
 numberButtons.forEach((button) => {
-	button.addEventListener('click', () => {
-		inputNumber(button.textContent);
-	});
+	button.addEventListener('click', () => inputNumber(button.textContent));
 });
 
 operatorButtons.forEach((button) => {
-	button.addEventListener('click', () => {
-		inputOperator(button.textContent);
-		updateDisplay();
-	});
+	button.addEventListener('click', () => inputOperator(button.textContent));
 });
+
+decimalButton.addEventListener('click', inputDecimal);
+equalsButton.addEventListener('click', equals);
+clearButton.addEventListener('click', clear);
