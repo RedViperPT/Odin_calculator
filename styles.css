@@ -58,8 +58,9 @@
 	transform: translateY(1px);
 }
 
-.buttons .clear {
-	grid-column: span 4;
+.buttons .clear,
+.buttons .delete {
+	grid-column: span 2;
 	background-color: #d9534f;
 	color: white;
 	border-color: #fff #8b0000 #8b0000 #fff;

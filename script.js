@@ -12,8 +12,8 @@ function multiply(a, b) {
 
 function divide(a, b) {
 	if (b === 0) {
-		alert('Nice try, the universe remains intact!');
-		return NaN;
+		return 'Nice try, the universe remains intact!';
+		// return NaN;
 	}
 	return a / b;
 }
@@ -34,9 +34,11 @@ function operate(a, b, operator) {
 			return NaN;
 	}
 }
+
 function updateDisplay() {
 	display.textContent = displayValue;
 }
+
 function inputNumber(number) {
 	if (waitingForSecondNumber) {
 		displayValue = number;
@@ -94,12 +96,18 @@ function clear() {
 	updateDisplay();
 }
 
+function backspace() {
+	displayValue = displayValue.slice(0, -1);
+	updateDisplay();
+}
+
 const display = document.querySelector('[data-display]');
 const numberButtons = document.querySelectorAll('[data-number]');
 const clearButton = document.querySelector('[data-clear]');
 const operatorButtons = document.querySelectorAll('[data-operator]');
 const equalsButton = document.querySelector('[data-equals]');
 const decimalButton = document.querySelector('[data-decimal]');
+const backspaceButton = document.querySelector('[data-backspace]');
 
 let displayValue = '0';
 let operator = null;
@@ -117,3 +125,4 @@ operatorButtons.forEach((button) => {
 decimalButton.addEventListener('click', inputDecimal);
 equalsButton.addEventListener('click', equals);
 clearButton.addEventListener('click', clear);
+backspaceButton.addEventListener('click', backspace);
