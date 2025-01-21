@@ -126,3 +126,25 @@ decimalButton.addEventListener('click', inputDecimal);
 equalsButton.addEventListener('click', equals);
 clearButton.addEventListener('click', clear);
 backspaceButton.addEventListener('click', backspace);
+
+document.addEventListener('keydown', (e) => {
+	if (e.key >= '0' && e.key <= '9') {
+		inputNumber(e.key);
+		e.preventDefault();
+	} else if (['+', '-', '*', '/'].includes(e.key)) {
+		inputOperator(e.key);
+		e.preventDefault();
+	} else if (e.key === '.' || e.key === ',') {
+		inputDecimal();
+		e.preventDefault();
+	} else if (e.key === 'Enter') {
+		equals();
+		e.preventDefault();
+	} else if (e.key === 'Backspace') {
+		backspace();
+		e.preventDefault();
+	} else if (e.key === 'Escape') {
+		clear();
+		e.preventDefault();
+	}
+});
