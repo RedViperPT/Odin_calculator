@@ -97,7 +97,11 @@ function clear() {
 }
 
 function backspace() {
-	displayValue = displayValue.slice(0, -1);
+	if (displayValue.length > 1) {
+		displayValue = displayValue.slice(0, -1);
+	} else {
+		displayValue = '0';
+	}
 	updateDisplay();
 }
 
