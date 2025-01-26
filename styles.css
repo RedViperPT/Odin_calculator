@@ -30,6 +30,8 @@
 	overflow-x: auto; /* Horizontal scrolling for long numbers */
 	white-space: nowrap; /* Keep numbers on single line */
 	flex-shrink: 0;
+	scrollbar-color: #d9534f #c0c0c0;
+	scrollbar-width: thin;
 }
 
 .buttons {
